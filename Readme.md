@@ -149,3 +149,31 @@ After reranking, each chunk’s semantic similarity with the question is scored.
 
 Final Test data performance: Accuracy0.48 /ROUGE-L 0.2990
 (baseline：0.43/0.21221)
+
+### III.Final Answer Generation Model Selection
+
+| Method | Answer Generation Model | Accuracy | ROUGE-L |
+|--------|--------------------------|----------|----------|
+| Method 8: Query Expansion → RRF → Temp Answer → Answer-Guided Rerank → Score Filter | llama-3.3-70b-versatile | 0.48 | 0.2990 |
+| Method 8: Query Expansion → RRF → Temp Answer → Answer-Guided Rerank → Score Filter | llama-3.1-8b-instant | 0.48 | 0.2990 |
+
+We initially expected the 70B model to outperform the 8B model under the same evidence conditions, but both achieved identical accuracy.
+
+* When evidence was limited, the 70B model inferred likely answers, while the 8B model often returned none.
+* With sufficient evidence, the 70B model added context, while the 8B model gave concise answers.
+
+This is likely because the retrieved chunks were already highly relevant (fewer than 5, with scores > 0.6), reducing the performance gap.
+
+Therefore, **llama-3.1-8b-instant** was selected as the final answering model, as it offers comparable performance with significantly fewer parameters.
+
+
+ 
+# 7. Conclusion
+In RAG systems, precise evidence can allow smaller models to perform same sa larger ones in QA tasks.
+
+
+
+
+
+
+
